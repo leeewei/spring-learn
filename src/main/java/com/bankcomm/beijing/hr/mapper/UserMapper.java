@@ -5,6 +5,8 @@
 
 package com.bankcomm.beijing.hr.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Select;
 
 import com.bankcomm.beijing.hr.entity.User;
@@ -20,7 +22,7 @@ import com.bankcomm.beijing.hr.entity.User;
 public interface UserMapper {
 	User getUser(String username);
 
-	User getUserList();
+	List<User> getUserList();
 
 	@Select("select * from User where username=#{username}")
 	User getUserAnnotation(String username);

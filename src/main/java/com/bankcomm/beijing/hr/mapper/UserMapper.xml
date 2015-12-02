@@ -7,7 +7,7 @@
 	<select id="getUser" parameterType="string" resultType="com.bankcomm.beijing.hr.entity.User">
 		SELECT	* from user where username = #{username}
 	</select>
-	<select id="getUserList" resultType="list">
+	<select id="getUserList" resultType="User">
 		SELECT	* from user
 	</select>
 </mapper>

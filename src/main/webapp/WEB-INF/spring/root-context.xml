@@ -50,11 +50,10 @@
 		<property name="jdbcInterceptors" value="SlowQueryReport(threshold=500)" />
 	</bean>
 
-	
-	<!-- <bean id="transactionManager" class="">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	 -->
+	
 	    <!-- 配置SqlSessionFactoryBean -->
     <!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>

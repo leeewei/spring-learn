@@ -10,4 +10,10 @@
 	<select id="getUserList" resultType="User">
 		SELECT	* from user
 	</select>
+	<insert id="addUser" parameterType="User">
+		insert into user (username,password) values (#{username},#{password})
+	</insert>
+	<!-- <update id="updatePwd" parameterType="String">
+		update user set password=#{param2} where username= #{param1}
+	</update> -->
 </mapper>

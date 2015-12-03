@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bankcomm.beijing.hr.entity.User;
 import com.bankcomm.beijing.hr.mapper.UserMapper;
@@ -35,8 +36,19 @@ public class UserService {
 		return userMapper.getUser(username);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<User> getUserList() {
 		return (List<User>) userMapper.getUserList();
+	}
+	@Transactional
+	public void addUser(User u){
+		userMapper.addUser(u);
+	}
+	@Transactional
+	public void changePwd(String username,String newPwd){
+		userMapper.updatePwd(username, newPwd);
+	}
+	@Transactional
+	public void deleteUser(String username){
+		userMapper.deleteUser(username);
 	}
 }

@@ -5,12 +5,15 @@
 
 package com.bankcomm.beijing.test;
 
+import java.util.Date;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import com.bankcomm.beijing.hr.entity.User;
 import com.bankcomm.beijing.hr.mapper.UserMapper;
 import com.bankcomm.beijing.hr.service.UserService;
 
@@ -39,6 +42,18 @@ public class MyBatisTest {
 		System.out.println(user.getUserAnnotation("user1").getPassword());//invoke the annotation
 		UserMapper um = ((SqlSessionFactory)ctx.getBean("sqlSessionFactory")).openSession().getMapper(UserMapper.class);
 		System.out.println(um.getUserAnnotation("user1").getPassword());
+		User newUser=new User();
+		newUser.setUsername("user"+new Date().getTime());
+		newUser.setPassword("pwd:"+newUser.getUsername());
+		user.addUser(newUser);
+		System.out.println("user:"+newUser.getUsername());
+		System.out.println("oldPwd:"+user.getUser(newUser.getUsername()).getPassword());
+		newUser.setPassword("pwd:"+new Date().getTime());
+		user.changePwd(newUser.getUsername(), newUser.getPassword());
+		newUser=user.getUser(newUser.getUsername());
+		System.out.println("newPwd:"+newUser.getPassword());
+		user.deleteUser(newUser.getUsername());
+		System.out.println("delete user:"+newUser.getUsername()+" ok");
 	}
 
 }

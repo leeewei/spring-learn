@@ -7,7 +7,9 @@ package com.bankcomm.beijing.hr.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.bankcomm.beijing.hr.entity.User;
 
@@ -26,4 +28,9 @@ public interface UserMapper {
 
 	@Select("select * from User where username=#{username}")
 	User getUserAnnotation(String username);
+	@Update("update user set password=#{param2} where username=#{param1}")
+	void updatePwd(String username,String newPwd);
+	void addUser(User u);
+	@Delete("delete from user where username=#{username}")
+	void deleteUser(String username);
 }

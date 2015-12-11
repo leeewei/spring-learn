@@ -1,21 +1,32 @@
-package com.bankcomm.beijing;
+package com.bankcomm.beijing.hr.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bankcomm.beijing.hr.entity.User;
 import com.bankcomm.beijing.hr.service.UserService;
 
 /**
@@ -30,7 +41,7 @@ public class HomeController {
 	private UserService userService;
 	
 	
-	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/home", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
@@ -63,4 +74,22 @@ public class HomeController {
 			logger.debug("\n");
 		}
 	}
+	@RequestMapping(value="/users",method=RequestMethod.GET,produces="application/json")
+	public @ResponseBody List<User> list(){
+		return userService.getUserList();
+	}
+	@RequestMapping(value="/users/{username}",method=RequestMethod.GET,produces="application/xml")
+	public @ResponseBody User get(@PathVariable(value="username")String username){
+		return userService.getUser(username);
+	}
+
+    @RequestMapping("/users/download")  
+    public ResponseEntity<byte[]> download() throws IOException {  
+        HttpHeaders headers = new HttpHeaders();  
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);  
+        headers.setContentDispositionFormData("attachment", "ehcache.xml");  
+        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(new File("D:\\531\\dev_soft\\eclipse\\workspace\\hr_re\\src\\main\\resources\\ehcache.xml")),  
+                                          headers, HttpStatus.CREATED);  
+    }  
+
 }

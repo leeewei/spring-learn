@@ -21,9 +21,13 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.bankcomm.beijing" />
+	<context:component-scan base-package="com.bankcomm.beijing.hr" />
 	
 	<!-- 支持上传文件 -->  
     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
-	
+	<!-- json转换器 -->
+	<!-- <beans:bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<beans:property name="supportedMediaTypes" value="application/json" />
+	</beans:bean> -->
 </beans:beans>

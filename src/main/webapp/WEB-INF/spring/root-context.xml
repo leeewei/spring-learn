@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:aop="http://www.springframework.org/schema/aop" 
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
     http://www.springframework.org/schema/aop 
-    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+    http://www.springframework.org/schema/aop/spring-aop.xsd 
     http://www.springframework.org/schema/tx  
-    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-    
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="locations">  
-            <list>  
-                <value>classpath:/config.properties</value>  
-            </list>  
-        </property>  
-    </bean>  
-	
-	
-	<!--  
-    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-	   <property name="jndiName" value="BBIPDS"/>
+	<context:annotation-config />
+	<context:component-scan base-package="com.bankcomm.beijing.hr" />
+	<tx:annotation-driven />
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/config.properties</value>
+			</list>
+		</property>
 	</bean>
-	 -->
-	 
-	 <!-- 开发过程中在本地请使用JDBC数据源.-->
-	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" init-method="createPool" >
+
+
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+		<property name="jndiName" value="BBIPDS"/> </bean> -->
+
+	<!-- 开发过程中在本地请使用JDBC数据源. -->
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
+		init-method="createPool">
 		<property name="name" value="dataSource" />
-	    <property name="driverClassName" value="${dataSource.driverClassName}" />
+		<property name="driverClassName" value="${dataSource.driverClassName}" />
 		<property name="url" value="${dataSource.url}" />
 		<property name="username" value="${dataSource.username}" />
 		<property name="password" value="${dataSource.password}" />
@@ -50,24 +51,19 @@
 		<property name="jdbcInterceptors" value="SlowQueryReport(threshold=500)" />
 	</bean>
 
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	    <!-- 配置SqlSessionFactoryBean -->
-    <!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:mybatis.xml"/>
-        mapper和resultmap配置路径
-        <property name="mapperLocations">
-            <list>
-                表示在com.hoo.resultmap包或以下所有目录中，以-resultmap.xml结尾所有文件
-                <value>classpath:com/bankcomm/beijing/hr/mapper/**/*Mapper.xml</value>
-            </list>
-        </property>
-    </bean> -->
-    
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+
+	<!-- 配置SqlSessionFactoryBean -->
+	<!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<property name="dataSource" ref="dataSource"/> <property name="configLocation" 
+		value="classpath:mybatis.xml"/> mapper和resultmap配置路径 <property name="mapperLocations"> 
+		<list> 表示在com.hoo.resultmap包或以下所有目录中，以-resultmap.xml结尾所有文件 <value>classpath:com/bankcomm/beijing/hr/mapper/**/*Mapper.xml</value> 
+		</list> </property> </bean> -->
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="com.bankcomm.beijing.hr.entity" />
 	</bean>
@@ -75,8 +71,5 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.bankcomm.beijing.hr.mapper" />
 	</bean>
-	<context:component-scan base-package="com.bankcomm.beijing.hr.service" />
-	<context:annotation-config />
-	<tx:annotation-driven/>
-    
+
 </beans>

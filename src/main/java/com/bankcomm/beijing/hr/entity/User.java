@@ -7,6 +7,8 @@ package com.bankcomm.beijing.hr.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * TODO Document User
  * <p>
@@ -46,6 +48,7 @@ public class User implements Serializable{
 	/**
 	 * @return The password
 	 */
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

@@ -7,6 +7,9 @@ package com.bankcomm.beijing.hr.entity;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -16,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author lw
  * @since 1.0.0
  */
+@XmlRootElement
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String id;
@@ -24,6 +28,7 @@ public class User implements Serializable{
 	/**
 	 * @return The id
 	 */
+	@XmlElement
 	public String getId() {
 		return id;
 	}
@@ -36,6 +41,7 @@ public class User implements Serializable{
 	/**
 	 * @return The username
 	 */
+	@XmlElement
 	public String getUsername() {
 		return username;
 	}

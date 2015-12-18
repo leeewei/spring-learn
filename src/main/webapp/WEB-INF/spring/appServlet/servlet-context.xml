@@ -21,10 +21,14 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.bankcomm.beijing.hr" />
+	<context:component-scan base-package="com.bankcomm.beijing.hr.controller" />
 	
 	<!-- 支持上传文件 -->  
-    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	<beans:property name="defaultEncoding" value="UTF-8"/>
+    	<!-- 5MB -->
+    	<beans:property name="maxUploadSize" value="5242880"/>
+    </beans:bean>
 	<!-- json转换器 -->
 	<!-- <beans:bean id="jsonConverter"
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

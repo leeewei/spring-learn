@@ -33,4 +33,8 @@ public interface UserMapper {
 	void addUser(User u);
 	@Delete("delete from user where username=#{username}")
 	void deleteUser(String username);
+	@Select("select role from user_role where username=#{username}")
+	List<String> getUserRoles(String username);
+	@Select("select a.perm_code from role_perm a join user_role b on b.role=a.role join user c on c.username=b.username where c.username=#{username}")
+	List<String> getUserStringPermissions(String username);
 }

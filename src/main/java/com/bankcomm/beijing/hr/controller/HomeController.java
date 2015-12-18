@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bankcomm.beijing.hr.entity.User;
@@ -74,11 +73,11 @@ public class HomeController {
 			logger.debug("\n");
 		}
 	}
-	@RequestMapping(value="/users",method=RequestMethod.GET,produces="application/json")
+	@RequestMapping(value="/users",method=RequestMethod.GET,produces={"application/json"})
 	public @ResponseBody List<User> list(){
 		return userService.getUserList();
 	}
-	@RequestMapping(value="/users/{username}",method=RequestMethod.GET,produces="application/xml")
+	@RequestMapping(value="/users/{username}",method=RequestMethod.GET,produces={"application/xml"})
 	public @ResponseBody User get(@PathVariable(value="username")String username){
 		return userService.getUser(username);
 	}

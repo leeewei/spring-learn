@@ -22,7 +22,7 @@ public class HrCasRealm extends CasRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
 		String username = (String) principals.getPrimaryPrincipal(); // 从这里可以从cas
-		logger.debug("cas-shiro username:" + username);
+		logger.error("cas-shiro username:" + username);
 		// 也可以从 Subject subject = SecurityUtils.getSubject();
 		// return (String)subject.getPrincipals().asList().get(0); 中取得，因为已经整合后
 		// cas 交给了 shiro-cas

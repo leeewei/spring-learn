@@ -10,6 +10,11 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -73,15 +78,19 @@ public class HomeController {
 			logger.debug("\n");
 		}
 	}
+	//@RequiresGuest /*要求当前的Subject 是一个"guest"，也就是说，他们必须是在之前的session 中没有被验证或被记住才能被访问或调用*/
+//	@RequiresAuthentication/*要求当前Subject 已经在当前的session 中被验证通过才能被访问或调用*/
+	@RequiresPermissions("user:all_view")/*要求当前的Subject 被允许一个或多个权限，以便执行注解的方法*/
+//	@RequiresRoles("all")/*要求当前的Subject 拥有所有指定的角色。如果他们没有，则该方法将不会被执行，而且AuthorizationException 异常将会被抛出。*/
 	@RequestMapping(value="/users",method=RequestMethod.GET,produces={"application/json"})
 	public @ResponseBody List<User> list(){
 		return userService.getUserList();
 	}
+	@RequiresUser/*RequiresUser 注解需要当前的Subject 是一个应用程序用户才能被注解的类/实例/方法访问或调用。一个“应用程序用户”被定义为一个拥有已知身份，或在当前session 中由于通过验证被确认，或者在之前session 中的'RememberMe'服务被记住。*/
 	@RequestMapping(value="/users/{username}",method=RequestMethod.GET,produces={"application/xml"})
 	public @ResponseBody User get(@PathVariable(value="username")String username){
 		return userService.getUser(username);
 	}
-
     @RequestMapping("/users/download")  
     public ResponseEntity<byte[]> download() throws IOException {  
         HttpHeaders headers = new HttpHeaders();  

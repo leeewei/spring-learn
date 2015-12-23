@@ -9,6 +9,10 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml,/WEB-INF/spring/shirocas-web.xml</param-value>
 	</context-param>
+	<context-param>
+		<param-name>casServerUrlPrefix</param-name>
+		<param-value>http://localhost:8080/cas</param-value>
+	</context-param>
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -48,7 +52,19 @@
 		<filter-name>characterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+	<!-- 用于单点退出，该过滤器用于实现单点登出功能，可选配置。-->
+	<listener>
+	    <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+	</listener>
+	<!-- 该过滤器用于实现单点登出功能，可选配置。 -->
+	<!-- <filter>
+	    <filter-name>CAS And Shiro Single Sign Out Filter</filter-name>
+	    <filter-class>com.bankcomm.beijing.hr.shiro.cas.web.CasAndShiroSingleSignOutFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>CAS And Shiro Single Sign Out Filter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping> -->
 	<!-- shiro filter -->
 	<filter>
 		<description> shrio权限过滤,DelegatingFilterProxy 作用是自动到 spring 容器查找名字为 shiroFilter（filter-name）的 bean并把所有 Filter 的操作委托给它  </description>

@@ -21,8 +21,15 @@
 		<property name="casServerUrlPrefix" value="http://localhost:8080/cas" />  <!--该地址为cas server地址 -->
 		<property name="casService" value="http://localhost:8080/beijing/shiro-cas" /> <!-- 该地址为client1 的访问地址+ 下面配置的cas filter -->
 	</bean>
-	
+
 	<!-- Shiro的Web过滤器 -->
+	<bean id="singleSignOutFilter" class="com.bankcomm.beijing.hr.shiro.cas.web.CasAndShiroSingleSignOutFilter">
+		<property name="casServerUrlPrefix" value="http://localhost:8080/cas" />
+	</bean>
+	<!-- <bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+		<property name="redirectUrl"
+			value="http://localhost:8080/cas/logout?service=http://localhost:8088/beijing" />
+	</bean> -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl"
@@ -32,22 +39,24 @@
 			<map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />
 				<entry key="cas" value-ref="casFilter" />
+				<entry key="singleSignOut" value-ref="singleSignOutFilter"/>
 			</map>
 		</property>
 		<property name="filterChainDefinitions">
 			<value>
+				/cas=singleSignOut,cas
 				/casFailure.jsp = anon
-				/shiro-cas* = cas
+				/shiro-cas* =singleSignOut,cas
 				/images/** = anon
 				/css/** = anon
 				/js/** = anon
 				/static/** = anon
-				/logout = logout
-				/** = authc
+				/logout = singleSignOut,logout
+				/** = singleSignOut,authc
 			</value>
 		</property>
 	</bean>
-		<!-- 会话ID生成器 -->
+	<!-- 会话ID生成器 -->
 	<bean id="sessionIdGenerator"
 		class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />
 
@@ -64,9 +73,9 @@
 		<property name="maxAge" value="2592000" /><!-- 30天 -->
 	</bean>
 
-	<!-- rememberMe管理器  如需要记住功能 可删掉相关配置-->	
+	<!-- rememberMe管理器 如需要记住功能 可删掉相关配置 -->
 	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
-		<!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->
+		<!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位） -->
 		<property name="cipherKey"
 			value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" />
 		<property name="cookie" ref="rememberMeCookie" />
@@ -119,7 +128,8 @@
 	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
 		<property name="failureUrl" value="/casFailure.jsp" />
 	</bean>
-	<bean id="formAuthenticationFilter"	class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter" />
-	<!-- Shiro生命周期处理器-->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	<bean id="formAuthenticationFilter"
+		class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter" />
+	<!-- Shiro生命周期处理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 </beans>

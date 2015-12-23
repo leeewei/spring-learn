@@ -31,6 +31,13 @@
 	<logger name="org.springframework.web">
 		<level value="debug" />
 	</logger>
+	
+	<logger name="org.jasig">
+		<level value="debug" />
+	</logger>
+	<logger name="org.apache.shiro">
+		<level value="debug" />
+	</logger>
 
 	<!-- Root Logger -->
 	<root>

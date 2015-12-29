@@ -35,7 +35,6 @@ public class UserService {
 	public User getUserAnnotation(String username) {
 		return userMapper.getUser(username);
 	}
-
 	public List<User> getUserList() {
 		return (List<User>) userMapper.getUserList();
 	}

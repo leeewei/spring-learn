@@ -3,12 +3,17 @@
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:cache="http://www.springframework.org/schema/cache"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
-        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
-
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<aop:config proxy-target-class="true"></aop:config>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
 	<!-- 缓存管理器 ehcache 的配置 -->
-	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml" />
 	</bean>
 
@@ -23,13 +28,13 @@
 	</bean>
 
 	<!-- Shiro的Web过滤器 -->
-	<bean id="singleSignOutFilter" class="com.bankcomm.beijing.hr.shiro.cas.web.CasAndShiroSingleSignOutFilter">
+	<bean id="singleSignOutFilter"
+		class="com.bankcomm.beijing.hr.shiro.cas.web.CasAndShiroSingleSignOutFilter">
 		<property name="casServerUrlPrefix" value="http://localhost:8080/cas" />
 	</bean>
-	<!-- <bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter">
-		<property name="redirectUrl"
-			value="http://localhost:8080/cas/logout?service=http://localhost:8088/beijing" />
-	</bean> -->
+	<!-- <bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter"> 
+		<property name="redirectUrl" value="http://localhost:8080/cas/logout?service=http://localhost:8088/beijing" 
+		/> </bean> -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl"
@@ -39,7 +44,7 @@
 			<map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />
 				<entry key="cas" value-ref="casFilter" />
-				<entry key="singleSignOut" value-ref="singleSignOutFilter"/>
+				<entry key="singleSignOut" value-ref="singleSignOutFilter" />
 			</map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -112,7 +117,7 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="casRealm" />
 		<property name="sessionManager" ref="sessionManager" />
-		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheManager" ref="shiroCacheManager" />
 		<property name="rememberMeManager" ref="rememberMeManager" />
 		<property name="subjectFactory" ref="casSubjectFactory" />
 	</bean>

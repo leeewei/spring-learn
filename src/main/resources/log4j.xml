@@ -38,6 +38,12 @@
 	<logger name="org.apache.shiro">
 		<level value="debug" />
 	</logger>
+	<logger name="org.mybatis">
+		<level value="debug" />
+	</logger>
+	<logger name="org.apache.ibatis">
+		<level value="debug" />
+	</logger>
 
 	<!-- Root Logger -->
 	<root>

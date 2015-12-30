@@ -25,10 +25,14 @@
 	</logger>
 	
 	<logger name="org.springframework.context">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 
 	<logger name="org.springframework.web">
+		<level value="debug" />
+	</logger>
+	
+	<logger name="org.springframework.cache">
 		<level value="debug" />
 	</logger>
 	
@@ -42,6 +46,9 @@
 		<level value="debug" />
 	</logger>
 	<logger name="org.apache.ibatis">
+		<level value="debug" />
+	</logger>
+	<logger name="net.sf.ehcache">
 		<level value="debug" />
 	</logger>
 

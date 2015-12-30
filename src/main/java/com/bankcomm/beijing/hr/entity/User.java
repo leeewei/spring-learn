@@ -54,7 +54,7 @@ public class User implements Serializable{
 	/**
 	 * @return The password
 	 */
-	@JsonIgnore
+//	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

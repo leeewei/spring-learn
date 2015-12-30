@@ -19,6 +19,8 @@ import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -102,6 +104,11 @@ public class HomeController {
         headers.setContentDispositionFormData("attachment", "ehcache.xml");  
         return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(new File("D:\\531\\dev_soft\\eclipse\\workspace\\hr_re\\src\\main\\resources\\ehcache.xml")),  
                                           headers, HttpStatus.CREATED);  
-    }  
+    } 
+    @RequiresUser/*RequiresUser 注解需要当前的Subject 是一个应用程序用户才能被注解的类/实例/方法访问或调用。一个“应用程序用户”被定义为一个拥有已知身份，或在当前session 中由于通过验证被确认，或者在之前session 中的'RememberMe'服务被记住。*/
+	@RequestMapping(value="/users/{username}/password",method=RequestMethod.PUT,produces={"application/json"})
+	public void changePwd(@PathVariable(value="username")String username,@RequestParam(value="pwd")String pwd){
+		userService.changePwd(username, pwd);
+	}
 
 }

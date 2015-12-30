@@ -12,10 +12,6 @@
 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		<property name="securityManager" ref="securityManager" />
 	</bean>
-	<!-- 缓存管理器 ehcache 的配置 -->
-	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml" />
-	</bean>
 
 	<bean id="casRealm" class="com.bankcomm.beijing.hr.shiro.realm.HrCasRealm">
 		<property name="cachingEnabled" value="true" />

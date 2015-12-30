@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,27 +27,31 @@ import com.bankcomm.beijing.hr.mapper.UserMapper;
  */
 @Service
 public class UserService {
+	private static final String CACHE="userCache";
 	@Inject
 	private UserMapper userMapper;
-
+	@Cacheable(value="userCache",key="#username")
 	public User getUser(String username) {
 		return userMapper.getUser(username);
 	}
-
+	@Cacheable(value="userCache",key="#username")
 	public User getUserAnnotation(String username) {
 		return userMapper.getUser(username);
 	}
 	public List<User> getUserList() {
 		return (List<User>) userMapper.getUserList();
 	}
+	@CacheEvict(value=CACHE,key="#u.username")
 	@Transactional
 	public void addUser(User u){
 		userMapper.addUser(u);
 	}
+	@CacheEvict(value=CACHE,key="#username")
 	@Transactional
 	public void changePwd(String username,String newPwd){
 		userMapper.updatePwd(username, newPwd);
 	}
+	@CacheEvict(value=CACHE)
 	@Transactional
 	public void deleteUser(String username){
 		userMapper.deleteUser(username);

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop.xsd 
+    http://www.springframework.org/schema/tx  
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- This will ensure that Hibernate or JPA exceptions are automatically 
+		translated into Spring's generic DataAccessException hierarchy for those 
+		classes annotated with Repository. For example, see ***DAOImpl. -->
+	<bean
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	<!-- hibernate sessionFactory -->
+	<!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> 
+		<property name="dataSource" ref="dataSource" /> <property name="packagesToScan"> 
+		<list> 可以加多个包 <value>com.bankcomm.beijing.hr.entity</value> </list> </property> 
+		<property name="hibernateProperties"> <props> <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> 
+		<prop key="hibernate.dialect">${hibernate.dialect}</prop> <prop key="hibernate.show_sql">${hibernate.show_sql}</prop> 
+		<prop key="hibernate.current_session_context_class">thread</prop> <prop key="hibernate.format_sql">${hibernate.format_sql}</prop> 
+		<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop> 
+		<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop> 
+		<prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop> 
+		</props> </property> </bean> -->
+
+	<bean id="defaultPersistenceUnitManager"
+		class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+		<property name="persistenceXmlLocation" value="classpath:persistence.xml" />
+		<!-- comment dataSourceLooup to use jndi -->
+		<property name="dataSourceLookup">
+			<bean	class="org.springframework.jdbc.datasource.lookup.BeanFactoryDataSourceLookup" />
+		</property>
+	</bean>
+
+	<!-- 整合mysqljpa -->
+	<bean id="hrreEntityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitManager" ref="defaultPersistenceUnitManager"></property>
+		<property name="persistenceUnitName" value="hrdb"></property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="${hibernate.show_sql}"/>
+				<property name="database" value="MYSQL"/>
+				<property name="generateDdl" value="false"/>
+			</bean>
+		</property>
+	</bean>
+	<bean id="hrreTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="hrreEntityManagerFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="hrreTransactionManager" proxy-target-class="false" />
+
+
+
+</beans>

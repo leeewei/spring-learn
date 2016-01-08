@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop.xsd 
+    http://www.springframework.org/schema/tx  
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<tx:annotation-driven />
+
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+		<property name="jndiName" value="BBIPDS"/> </bean> -->
+
+	<!-- 开发过程中在本地请使用JDBC数据源. -->
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
+		init-method="createPool">
+		<property name="name" value="dataSource" />
+		<property name="driverClassName" value="${dataSource.driverClassName}" />
+		<property name="url" value="${dataSource.url}" />
+		<property name="username" value="${dataSource.username}" />
+		<property name="password" value="${dataSource.password}" />
+		<property name="initialSize" value="${dataSource.initialSize}" />
+		<property name="maxActive" value="${dataSource.maxActive}" />
+		<property name="maxIdle" value="${dataSource.maxIdle}" />
+		<property name="minIdle" value="${dataSource.minIdle}" />
+		<property name="maxWait" value="${dataSource.maxWait}" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="true" />
+		<property name="validationQuery" value="${dataSource.testSQL}" />
+		<property name="validationInterval" value="30000" />
+		<property name="fairQueue" value="false" />
+		<property name="jmxEnabled" value="true" />
+		<property name="jdbcInterceptors" value="SlowQueryReport(threshold=500)" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 配置SqlSessionFactoryBean -->
+	<!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<property name="dataSource" ref="dataSource"/> <property name="configLocation" 
+		value="classpath:mybatis.xml"/> mapper和resultmap配置路径 <property name="mapperLocations"> 
+		<list> 表示在com.hoo.resultmap包或以下所有目录中，以-resultmap.xml结尾所有文件 <value>classpath:com/bankcomm/beijing/hr/mapper/**/*Mapper.xml</value> 
+		</list> </property> </bean> -->
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"	value="classpath:mybatis.xml"/>
+		<property name="typeAliasesPackage" value="com.bankcomm.beijing.hr.entity" />
+	</bean>
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.bankcomm.beijing.hr.mapper" />
+	</bean>
+
+</beans>

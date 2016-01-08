@@ -7,8 +7,17 @@ package com.bankcomm.beijing.hr.entity;
 
 import java.io.Serializable;
 
+import javax.annotation.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @since 1.0.0
  */
 @XmlRootElement
+@Entity
+@Table(name="user")
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String id;
@@ -29,6 +40,20 @@ public class User implements Serializable{
 	 * @return The id
 	 */
 	@XmlElement
+	@Id
+	@GeneratedValue(generator="idGenerator")
+	/*hibernate 提供的uuid生成器*/
+	@GenericGenerator(name="idGenerator", strategy="uuid") 
+	@Column(name="id",length=32,nullable=false,unique=true)
+/*	通过主键表生成主键 jpa提供的生成器
+ * @TableGenerator(
+	         name="tab-store",
+	         table="ID_GENERATOR_TABLE",
+	         pkColumnName = "G_KEY",
+	         pkColumnValue="EMPLOYEE_PK",
+	         valueColumnName = "G_VALUE",
+	         allocationSize=1
+	    )*/
 	public String getId() {
 		return id;
 	}
@@ -42,6 +67,7 @@ public class User implements Serializable{
 	 * @return The username
 	 */
 	@XmlElement
+	@Column(name="username")
 	public String getUsername() {
 		return username;
 	}
@@ -54,7 +80,8 @@ public class User implements Serializable{
 	/**
 	 * @return The password
 	 */
-//	@JsonIgnore
+	@JsonIgnore
+	@Column(name="password")
 	public String getPassword() {
 		return password;
 	}

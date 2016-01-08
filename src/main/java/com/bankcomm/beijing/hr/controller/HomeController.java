@@ -11,16 +11,11 @@ import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bankcomm.beijing.hr.entity.User;
 import com.bankcomm.beijing.hr.service.UserService;
+import com.bankcomm.beijing.hr.service.UserServiceHib;
 
 /**
  * Handles requests for the application home page.
@@ -47,6 +43,8 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Inject
 	private UserService userService;
+	@Inject
+	private UserServiceHib userServiceHib;
 	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -110,5 +108,13 @@ public class HomeController {
 	public void changePwd(@PathVariable(value="username")String username,@RequestParam(value="pwd")String pwd){
 		userService.changePwd(username, pwd);
 	}
+    @RequestMapping(value="/users",method=RequestMethod.POST,produces="application/json")
+    public User addUser(@RequestParam(value="username",required=true)String username,@RequestParam(value="password",required=true)String password){
+    	User u=new User();
+    	u.setUsername(username);
+    	u.setPassword(password);
+    	userServiceHib.addUser(u);
+    	return u;
+    }
 
 }

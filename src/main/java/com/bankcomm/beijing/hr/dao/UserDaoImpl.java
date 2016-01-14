@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
-import com.bankcomm.beijing.hr.annotation.hibernate.HrreTx;
 import com.bankcomm.beijing.hr.entity.User;
 
 /**

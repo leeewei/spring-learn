@@ -8,25 +8,19 @@ package com.bankcomm.beijing.hr.service;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Qualifier;
+import javax.transaction.TransactionManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bankcomm.beijing.hr.annotation.hibernate.HrreTx;
 import com.bankcomm.beijing.hr.dao.UserDao;
 import com.bankcomm.beijing.hr.entity.User;
-import com.bankcomm.beijing.hr.mapper.UserMapper;
+import com.bankcomm.beijing.hr.entity.util.TxManagers;
 
-/**
- * TODO Document UserService
- * <p>
- * 
- * @version 1.0.0,2015-12-1
- * @author lw
- * @since 1.0.0
- */
+
 @Service
 public class UserServiceHib {
 	private static final String CACHE="userCache";
@@ -34,7 +28,7 @@ public class UserServiceHib {
 	private UserDao userDao;
 	
 	@CacheEvict(value=CACHE,key="#u.username")
-	@HrreTx
+	@Transactional(TxManagers.HRRE_TX_MANAGER)
 	public void addUser(User u){
 		userDao.saveUser(u);
 	}

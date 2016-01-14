@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd 
     http://www.springframework.org/schema/aop 
@@ -10,7 +12,9 @@
     http://www.springframework.org/schema/tx  
     http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context.xsd">
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/data/jpa
+	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 	<!-- This will ensure that Hibernate or JPA exceptions are automatically 
 		translated into Spring's generic DataAccessException hierarchy for those 
@@ -55,8 +59,8 @@
 	<bean id="hrreTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="hrreEntityManagerFactory" />
 	</bean>
-	<tx:annotation-driven transaction-manager="hrreTransactionManager" proxy-target-class="false" />
-
+	<!-- <tx:annotation-driven transaction-manager="hrreTransactionManager" proxy-target-class="false" /> -->
+	<jpa:repositories base-package="com.bankcomm.beijing.hr.dao"/>
 
 
 </beans>

@@ -53,7 +53,7 @@
 				/js/** = anon
 				/static/** = anon
 				/logout = singleSignOut,logout
-				/** = singleSignOut,authc
+				/** = singleSignOut,anon
 			</value>
 		</property>
 	</bean>

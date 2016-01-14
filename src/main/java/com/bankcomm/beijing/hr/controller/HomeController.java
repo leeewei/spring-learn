@@ -109,7 +109,7 @@ public class HomeController {
 		userService.changePwd(username, pwd);
 	}
     @RequestMapping(value="/users",method=RequestMethod.POST,produces="application/json")
-    public User addUser(@RequestParam(value="username",required=true)String username,@RequestParam(value="password",required=true)String password){
+    public @ResponseBody User addUser(@RequestParam(value="username",required=true)String username,@RequestParam(value="password",required=true)String password){
     	User u=new User();
     	u.setUsername(username);
     	u.setPassword(password);
